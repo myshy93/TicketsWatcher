@@ -1,11 +1,15 @@
 import connections
 from bs4 import *
+import configparser
 
 
 class Tickets:
 
     def __init__(self):
-        self.connect = connections.Rdsdb()
+        configfile = configparser.ConfigParser()
+        configfile.read('config.ini')
+        login_data = dict(configfile.items('LOGIN'))
+        self.connect = connections.Rdsdb(login_data['user'], login_data['pass'])
         self.url = self.connect.get_final_url()
         self.sesiune = self.connect.getsession()
 

@@ -1,6 +1,6 @@
 import requests
 import urllib3
-from bs4 import *z
+from bs4 import *
 import configparser
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
