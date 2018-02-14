@@ -5,7 +5,7 @@ from bs4 import *
 class Tickets:
 
     def __init__(self):
-        self.connect = connections.Rdsdb('mihai2.dinu', 'Linuxp0w3r')
+        self.connect = connections.Rdsdb()
         self.url = self.connect.get_final_url()
         self.sesiune = self.connect.getsession()
 
