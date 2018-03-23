@@ -1,20 +1,28 @@
-from tkinter import *
 import ticketList
 import time
-import tkinter.messagebox
+from tkinter import messagebox
 import threading
+import vlc
+
 
 
 class Watcher(threading.Thread):
-    group_tickets = ticketList.Tickets()
+
+    # sound alert
+    player = vlc.MediaPlayer("resources/beeps.mp3")
+
+    bulk_tickets = ticketList.Tickets()
+    stop = 0
 
     def run(self):
 
+        self.stop = 0
         prev_tk_id = 0
 
         while True:
-            self.group_tickets.pull_tickets()
-            tks_list = self.group_tickets.get_tks_ids_list()
+
+            self.bulk_tickets.pull_tickets()
+            tks_list = self.bulk_tickets.get_tks_ids_list()
             tks_no = len(tks_list)
 
             if tks_no is 0:
@@ -27,18 +35,10 @@ class Watcher(threading.Thread):
             time.sleep(10)
 
     def alert(self):
-        print("alert")
+        self.player.play()
+        messagebox.showinfo('New ticket!', 'You have a new ticket in queue!')
+        self.player.stop()
 
 
-class Gui(threading.Thread):
 
-    def run(self):
-        whatcherObj = Watcher()
-        whatcherObj.daemon = True
-        root = Tk()
-        root.title("TicketsWatcher")
-        mainframe = Frame(root, width=250, height=100)
-        mainframe.pack()
-        start_btn = Button(mainframe, text="START", command=whatcherObj.start)
-        start_btn.pack()
-        root.mainloop()
+
